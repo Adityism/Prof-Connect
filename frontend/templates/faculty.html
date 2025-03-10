@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof-Connect | UPES</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        :root {
+            --primary-color: #00A0E3;
+            --secondary-color: #E31B6D;
+            --accent-color: #4285F4; /* Microsoft Teams color */
+            --background-light: #f5f5f7;
+            --card-light: white;
+            --text-dark: #333;
+            --text-medium: #666;
+            --text-light: #888;
+            --border-light: rgba(0, 160, 227, 0.1);
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --tag-bg-light: #f0f0f0;
+            --gradient-start: #00A0E3;
+            --gradient-mid: #7B68EE;
+            --gradient-end: #E31B6D;
+        }
+
+        .dark-mode {
+            --primary-color: #60B7FF;
+            --secondary-color: #FF6B9D;
+            --accent-color: #4285F4;
+            --background-light: #111827;
+            --card-light: #1F2937;
+            --text-dark: #F3F4F6;
+            --text-medium: #D1D5DB;
+            --text-light: #9CA3AF;
+            --border-light: rgba(96, 183, 255, 0.2);
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            --tag-bg-light: #374151;
+            --gradient-start: #60B7FF;
+            --gradient-mid: #9F7AEA;
+            --gradient-end: #FF6B9D;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-light);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            padding: 2rem;
+            margin: 1rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(0, 160, 227, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: right;
+        }
+
+        .card:hover h2::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-medium);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-content {
+            opacity: 1;
+        }
+        
+        body {
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        /* Updated Header Layout */
+        .main-nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            background-color: var(--card-light);
+            box-shadow: 0 2px 10px var(--shadow-light);
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            height: 50px;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            min-width: 200px;
+            justify-content: flex-end;
+        }
+
+        .nav-link {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(0, 160, 227, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Add margin-top to main content to account for fixed header */
+        main {
+            margin-top: 80px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .header-center {
+                gap: 15px;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 5px 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-nav-container {
+                height: auto;
+                padding: 10px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-center {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            main {
+                margin-top: 140px;
+            }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-dark);
+            margin-left: 20px;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Main Content Styles */
+        .page-title-container {
+            text-align: center;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .animated-title {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .animated-title span {
+            display: inline-block;
+            position: relative;
+        }
+
+        .animated-title .connector {
+            width: 40px;
+            height: 4px;
+            background: var(--primary-color);
+            position: relative;
+            animation: connect 2s ease-in-out infinite;
+            transform-origin: left;
+        }
+
+        @keyframes connect {
+            0%, 100% {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+
+        /* Updated Filter Bar */
+        .filter-bar {
+            background-color: var(--card-light);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            min-width: 180px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background-color: var(--card-light);
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .search-input {
+            min-width: 300px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background-color: var(--card-light);
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover,
+        .search-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .filter-select:focus,
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 160, 227, 0.1);
+            outline: none;
+        }
+
+        @keyframes scan {
+            0%, 100% { transform: translateX(-100%); opacity: 0; }
+            40%, 60% { transform: translateX(0); opacity: 0.2; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0) translateY(-50%); opacity: 0; }
+            50% { transform: scale(1) translateY(-50%); opacity: 1; }
+        }
+
+        /* Dark mode specific title adjustments */
+        .dark-mode .animated-title {
+            text-shadow: 0 0 20px rgba(96, 183, 255, 0.1);
+        }
+
+        .dark-mode .animated-title span::after {
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .dark-mode .animated-title::before {
+            background: linear-gradient(90deg,
+                transparent 0%,
+                var (--background-light) 5%,
+                var (--background-light) 95%,
+                transparent 100%);
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 30px;
+            padding: 15px 20px;
+            background-color: var(--card-light);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 160, 227, 0.2);
+            border-radius: 8px;
+            background-color: var(--card-light);
+            font-size: 14px;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.1);
+            outline: none;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 160, 227, 0.2);
+            border-radius: 8px;
+            width: 250px;
+            font-size: 14px;
+            color: var (--text-dark);
+            background-color: var (--card-light);
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var (--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.1);
+            outline: none;
+        }
+        
+        /* Faculty Card Grid */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .faculty-card {
+            background-color: var(--card-light);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid var(--border-light);
+        }
+        
+        .faculty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+            z-index: 1;
+        }
+        
+        .faculty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(0, 160, 227, 0.3);
+        }
+        
+        .faculty-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .faculty-card:nth-child(even) .status-badge {
+            background: linear-gradient(135deg, var(--primary-color), #0080B3);
+        }
+
+        .faculty-card:nth-child(odd) .status-badge {
+            background: linear-gradient(135deg, var(--secondary-color), #C6165D);
+        }
+        
+        .faculty-photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            object-position: top center;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faculty-card:hover .faculty-photo {
+            transform: scale(1.05);
+        }
+        
+        .faculty-info {
+            padding: 20px;
+            position: relative;
+        }
+        
+        .faculty-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+        
+        .faculty-title {
+            color: var(--text-medium);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .faculty-dept {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .faculty-seat {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .availability-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .available {
+            background-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+        }
+        
+        .unavailable {
+            background-color: #F44336;
+            box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+        }
+        
+        /* Research Interests */
+        .research-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .research-tag {
+            background-color: var(--tag-bg-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-medium);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .research-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Quick Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+        }
+        
+        .action-btn:hover::before {
+            width: 120%;
+            height: 120%;
+            opacity: 1;
+        }
+        
+        .action-btn:nth-child(1):hover {
+            background-color: #e91e63;
+            color: white;
+            box-shadow: 0 4px 8px rgba(233, 30, 99, 0.4);
+        }
+        
+        .action-btn:nth-child(2):hover {
+            background-color: #2196F3;
+            color: white;
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+        }
+        
+        .action-btn:nth-child(3):hover {
+            background-color: #FF9800;
+            color: white;
+            box-shadow: 0 4px 8px rgba(255, 152, 0, 0.4);
+        }
+        
+        .action-btn:nth-child(4):hover {
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 8px rgba(66, 133, 244, 0.4);
+        }
+        
+        /* Connect Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: var(--card-light);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: var(--secondary-color);
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 160, 227, 0.1);
+            color: var(--text-dark);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .form-select, .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 160, 227, 0.2);
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: var(--card-light);
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+        
+        .form-select:focus, .form-input:focus, .form-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 160, 227, 0.1);
+            outline: none;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav-container {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            
+            .faculty-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+        }
+
+        /* Dark mode specific adjustments */
+        .dark-mode .faculty-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .faculty-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(96, 183, 255, 0.3);
+        }
+
+        .dark-mode .research-tag {
+            background-color: rgba(96, 183, 255, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dark-mode .research-tag:hover {
+            background-color: rgba(96, 183, 255, 0.2);
+        }
+
+        .dark-mode .modal-content {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark-mode .filter-select,
+        .dark-mode .search-input {
+            background-color: rgba(31, 41, 55, 0.8);
+            border-color: rgba(96, 183, 255, 0.2);
+        }
+
+        .dark-mode .filter-select:focus,
+        .dark-mode .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(96, 183, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="main-nav-container">
+        <div class="header-left">
+            <div class="logo">
+                <img src="/static/images/upeslogo.png" alt="UPES Logo">
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <a href="/studentserv" class="nav-link">Student Services</a>
+            <a href="/instaConnect" class="nav-link">Insta-connect</a>
+            <a href="/announcements" class="nav-link">Announcements</a>
+            <a href="/internship" class="nav-link">Internships</a>
+            <a href="/caichat" class="nav-link">CAI</a>
+        </div>
+        
+        <div class="header-right">
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="page-title-container">
+            <h1 class="animated-title">
+                <span>Prof</span>
+                <div class="connector"></div>
+                <span>Connect</span>
+            </h1>
+        </div>
+        
+        <div class="container">
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <select class="filter-select" id="departmentFilter">
+                        <option value="all">All Departments</option>
+                    </select>
+                    
+                    <select class="filter-select" id="designationFilter">
+                        <option value="all">All Designations</option>
+                    </select>
+                    
+                    <select class="filter-select" id="availabilityFilter">
+                        <option value="all">All Faculty</option>
+                        <option value="available">Available Now</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name or research interest...">
+                </div>
+            </div>
+            
+            <div class="faculty-grid" id="facultyGrid">
+                <!-- Faculty cards will be populated here by JavaScript -->
+            </div>
+        </div>
+    </main>
+    
+    <!-- Connect Modal -->
+    <div class="modal" id="connectModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeConnectModal()">&times;</span>
+            <h2 class="modal-title">Connect with <span id="professorName"></span></h2>
+            
+            <form id="connectForm">
+                <div class="form-group">
+                    <label class="form-label">Query Type</label>
+                    <select class="form-select">
+                        <option>Doubt Clarification</option>
+                        <option>Research Guidance</option>
+                        <option>Project Discussion</option>
+                        <option>Collaboration Request</option>
+                        <option>Follow-up Request</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-input" placeholder="Brief subject of your query">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Detailed Query</label>
+                    <textarea class="form-textarea" placeholder="Describe your query in detail..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Preferred Meeting Date</label>
+                    <input type="date" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Preferred Time Slot</label>
+                    <select class="form-select">
+                        <option>9:00 AM - 10:00 AM</option>
+                        <option>10:00 AM - 11:00 AM</option>
+                        <option>11:00 AM - 12:00 PM</option>
+                        <option>12:00 PM - 1:00 PM</option>
+                        <option>2:00 PM - 3:00 PM</option>
+                        <option>3:00 PM - 4:00 PM</option>
+                        <option>4:00 PM - 5:00 PM</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="submitQuery()">Submit Query</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Faculty data
+        const facultyData = [
+            {
+                name: "Dr. Vijaysekhar Chellaboina",
+                designation: "Professor and Dean",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/dean.png",
+                research_interests: ["Artificial Intelligence", "Machine Learning"],
+                email: "vijaysekhar.chellaboina@upes.ac.in",
+                block: "A Block",
+                seat: "A-101",
+                available: true
+            },
+            {
+                name: "Dr. Vinod Patidar",
+                designation: "Professor",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/image copy 2.png",
+                research_interests: ["Data Structures", "Algorithms"],
+                email: "vinod.patidar@upes.ac.in",
+                block: "B Block",
+                seat: "B-205",
+                available: false
+            },
+            {
+                name: "Dr. Neelu Jyothi Ahuja",
+                designation: "Professor",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/jyoti.png",
+                research_interests: ["Cloud Computing", "Distributed Systems"],
+                email: "neelu@ddn.upes.ac.in",
+                block: "C Block",
+                seat: "C-301",
+                available: true
+            },
+            {
+                name: "Dr. Priya Sharma",
+                designation: "Assistant Professor",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/female.png",
+                research_interests: ["Cyber Security", "Network Security"],
+                email: "priya.sharma@upes.ac.in",
+                block: "D Block",
+                seat: "D-102",
+                available: false
+            },
+            {
+                name: "Dr. Anil Gupta",
+                designation: "Professor",
+                department: "School of Engineering",
+                profile_picture: "/static/images/male.png",
+                research_interests: ["Numerical Analysis", "Optimization"],
+                email: "anil.gupta@upes.ac.in",
+                block: "E Block",
+                seat: "E-201",
+                available: true
+            },
+            {
+                name: "Dr. Sunita Verma",
+                designation: "Associate Professor",
+                department: "School of Engineering",
+                profile_picture: "/static/images/female.png",
+                research_interests: ["Quantum Mechanics", "Material Science"],
+                email: "sunita.verma@upes.ac.in",
+                block: "F Block",
+                seat: "F-103",
+                available: false
+            },
+            {
+                name: "Dr. Rakesh Singh",
+                designation: "Assistant Professor",
+                department: "School of Engineering",
+                profile_picture: "/static/images/male.png",
+                research_interests: ["Organic Chemistry", "Polymer Science"],
+                email: "rakesh.singh@upes.ac.in",
+                block: "G Block",
+                seat: "G-202",
+                available: true
+            },
+            {
+                name: "Dr. Neha Kapoor",
+                designation: "Professor",
+                department: "School of Liberal Studies",
+                profile_picture: "/static/images/female.png",
+                research_interests: ["Literature", "Creative Writing"],
+                email: "neha.kapoor@upes.ac.in",
+                block: "H Block",
+                seat: "H-301",
+                available: false
+            },
+            {
+                name: "Dr. Amit Sharma",
+                designation: "Associate Professor",
+                department: "School of Business",
+                profile_picture: "/static/images/male.png",
+                research_interests: ["Marketing", "Consumer Behavior"],
+                email: "amit.sharma@upes.ac.in",
+                block: "I Block",
+                seat: "I-401",
+                available: true
+            },
+            {
+                name: "Dr. Sunil Kumar",
+                designation: "Assistant Professor",
+                department: "School of Law",
+                profile_picture: "/static/images/male.png",
+                research_interests: ["Corporate Law", "Intellectual Property"],
+                email: "sunil.kumar@upes.ac.in",
+                block: "J Block",
+                seat: "J-501",
+                available: false
+            },
+            {
+                name: "Dr. Anjali Singh",
+                designation: "Professor",
+                department: "School of Design",
+                profile_picture: "/static/images/female.png",
+                research_interests: ["Graphic Design", "User Experience"],
+                email: "anjali.singh@upes.ac.in",
+                block: "K Block",
+                seat: "K-601",
+                available: true
+            },
+            {
+                name: "Dr. Ravi Verma",
+                designation: "Associate Professor",
+                department: "School of Health Sciences",
+                profile_picture: "/static/images/male.png",
+                research_interests: ["Public Health", "Epidemiology"],
+                email: "ravi.verma@upes.ac.in",
+                block: "L Block",
+                seat: "L-701",
+                available: false
+            },
+            {
+                name: "Dr. Shubhi Sharma",
+                designation: "Assistant Professor",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/shu.jpg",
+                research_interests: ["Data Science", "Machine Learning"],
+                email: "shubhi.sharma@upes.ac.in",
+                block: "9104",
+                seat: "A-16",
+                available: true
+            },
+            {
+                name: "Sugandha Sharma",
+                designation: "Assistant Professor-Senior Scale",
+                department: "School of Computer Science",
+                profile_picture: "/static/images/ss.jpg",
+                research_interests: ["Software Engineering", "Web Development"],
+                email: "sugandha.sharma@upes.ac.in",
+                block: "9105",
+                seat: "A-17",
+                available: false
+            }
+        ];
+
+        // Function to render faculty cards
+        function renderFacultyCards(data) {
+            const grid = document.getElementById('facultyGrid');
+            grid.innerHTML = '';
+            
+            data.forEach(faculty => {
+                const card = document.createElement('div');
+                card.className = 'faculty-card';
+                
+                // Status badge for availability
+                const statusText = faculty.available ? 'Available Now' : 'Unavailable';
+                
+                const researchTags = faculty.research_interests.map(interest => 
+                    `<span class="research-tag">${interest}</span>`
+                ).join('');
+                
+                card.innerHTML = `
+                    <div class="status-badge">${statusText}</div>
+                    <img src="${faculty.profile_picture}" alt="${faculty.name}" class="faculty-photo">
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">${faculty.name}</h3>
+                        <p class="faculty-title">${faculty.designation}</p>
+                        <p class="faculty-dept">${faculty.department}</p>
+                        <p class="faculty-seat">Location: ${faculty.block}, ${faculty.seat}</p>
+                        <div class="research-tags">${researchTags}</div>
+                        <div class="availability-indicator ${faculty.available ? 'available' : 'unavailable'}"></div>
+                        
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="openConnectModal('${faculty.name}')">📝</button>
+                            <button class="action-btn" onclick="sendEmail('${faculty.email}')">📧</button>
+                            <button class="action-btn" onclick="showLocation('${faculty.block}', '${faculty.seat}')">📍</button>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        // Initialize department and designation filters
+        function initializeFilters() {
+            const departments = [...new Set(facultyData.map(faculty => faculty.department))];
+            const designations = [...new Set(facultyData.map(faculty => faculty.designation))];
+            
+            const departmentFilter = document.getElementById('departmentFilter');
+            const designationFilter = document.getElementById('designationFilter');
+            
+            departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                departmentFilter.appendChild(option);
+            });
+            
+            designations.forEach(desig => {
+                const option = document.createElement('option');
+                option.value = desig;
+                option.textContent = desig;
+                designationFilter.appendChild(option);
+            });
+        }
+        
+        // Filter faculty based on selected criteria
+        function filterFaculty() {
+            const departmentValue = document.getElementById('departmentFilter').value;
+            const designationValue = document.getElementById('designationFilter').value;
+            const availabilityValue = document.getElementById('availabilityFilter').value;
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredData = facultyData;
+            
+            // Filter by department
+            if (departmentValue !== 'all') {
+                filteredData = filteredData.filter(faculty => 
+                    faculty.department === departmentValue
+                );
+            }
+            
+            // Filter by designation
+            if (designationValue !== 'all') {
+                filteredData = filteredData.filter(faculty => 
+                    faculty.designation === designationValue
+                );
+            }
+            
+            // Filter by availability
+            if (availabilityValue !== 'all') {
+                const isAvailable = availabilityValue === 'available';
+                filteredData = filteredData.filter(faculty => 
+                    faculty.available === isAvailable
+                );
+            }
+            
+            // Filter by search term (name or research interests)
+            if (searchValue) {
+                filteredData = filteredData.filter(faculty => 
+                    faculty.name.toLowerCase().includes(searchValue) || 
+                    faculty.research_interests.some(interest => 
+                        interest.toLowerCase().includes(searchValue)
+                    )
+                );
+            }
+            
+            renderFacultyCards(filteredData);
+        }
+        
+        // Connect modal functions
+        function openConnectModal(professorName) {
+            document.getElementById('connectModal').style.display = 'flex';
+            document.getElementById('professorName').textContent = professorName;
+        }
+        
+        function closeConnectModal() {
+            document.getElementById('connectModal').style.display = 'none';
+        }
+        
+        function submitQuery() {
+            alert('Your query has been submitted! The professor will respond shortly.');
+            closeConnectModal();
+        }
+        
+        function sendEmail(email) {
+            window.location.href = `mailto:${email}`;
+        }
+        
+        function showLocation(block, seat) {
+            alert(`Professor is located at ${block}, Seat ${seat}`);
+            // In a real implementation, this could open a campus map
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            let modal = document.getElementById('connectModal');
+            if (event.target == modal) {
+                closeConnectModal();
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFacultyCards(facultyData);
+            initializeFilters();
+            
+            // Set up event listeners for filters
+            document.getElementById('departmentFilter').addEventListener('change', filterFaculty);
+            document.getElementById('designationFilter').addEventListener('change', filterFaculty);
+            document.getElementById('availabilityFilter').addEventListener('change', filterFaculty);
+            document.getElementById('searchInput').addEventListener('input', filterFaculty);
+        });
+    </script>
+    <!-- Add this before closing body tag -->
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+
+        // Theme toggle handler
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Update button icon
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

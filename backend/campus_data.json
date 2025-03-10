@@ -1,0 +1,23 @@
+{
+    "faculty": [
+      {
+        "name": "Dr. A. Sharma",
+        "department": "Computer Science",
+        "email": "a.sharma@campus.edu",
+        "office_hours": "Mon-Fri 10AM-12PM"
+      }
+    ],
+    "faqs": [
+      {
+        "question": "How can I reset my university email password?",
+        "answer": "You can reset your email password via the IT portal or by visiting the IT help desk."
+      }
+    ],
+    "announcements": [
+      {
+        "title": "Mid-Semester Exams Schedule Released",
+        "date": "2025-03-01",
+        "details": "Check the university portal for the full exam schedule."
+      }
+    ]
+  }

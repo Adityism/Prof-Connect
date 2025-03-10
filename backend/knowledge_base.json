@@ -1,0 +1,48 @@
+{
+    "faculty": [
+        {
+            "name": "Dr. Rajesh Kumar",
+            "department": "Computer Science",
+            "designation": "Professor",
+            "email": "rajesh.kumar@upes.ac.in",
+            "specialization": "Artificial Intelligence"
+        }
+    ],
+    "services": [
+        {
+            "name": "Library",
+            "location": "Academic Block A",
+            "timing": "9:00 AM - 6:00 PM",
+            "description": "State-of-the-art library with digital resources"
+        }
+    ],
+    "faqs": [
+        {
+            "question": "What are the admission requirements?",
+            "answer": "Admission requirements vary by program. Please check the specific program page for detailed requirements."
+        }
+    ],
+            "announcements": [
+                {
+                    "title": "Semester Registration",
+                    "date": "2024-02-17",
+                    "content": "Registration for Spring 2024 semester begins next week"
+                },
+                {
+                    "title": "Guest Lecture on AI",
+                    "date": "2024-03-01",
+                    "content": "Join us for a guest lecture on Artificial Intelligence by Dr. Smith."
+                },
+                {
+                    "title": "Campus Cleanup Day",
+                    "date": "2024-03-15",
+                    "content": "Participate in our campus cleanup day and help keep our campus beautiful!"
+                },
+                {
+                    "title": "Final Exam Schedule Released",
+                    "date": "2024-03-20",
+                    "content": "The final exam schedule for the Spring 2024 semester has been released."
+                }
+            ]
+
+}
