@@ -1,0 +1,25 @@
+.env
+__pycache__/
+*.pyc
+frontend/firebase_config.json
+backend/__pycache__/
+*.__pycache__
+.env.*
+!.env.example
+
+# Additional security patterns
+*.pyc
+backend/**/*.pyc
+backend/**/__pycache__/
+**/firebase_config*.json
+**/config*.json
+*.key
+*.pem
+*.secret
+*.env*
+!.env.example
+
+# IDE and system files
+.vscode/
+.idea/
+.DS_Store
